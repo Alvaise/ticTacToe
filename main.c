@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
 #define MAX_NUMBER_OF_MOVES 10
 
 void printBoard(char board[3][3]) {
@@ -66,6 +68,17 @@ for (int i = 0; i < 3; i++) {
     // If no winner is found after all checks
     return ' ';}
 
+char signToStart(void){
+  srand(time(0));
+ int x = rand();
+ if (x % 2 == 0) {
+   return 'x';
+} else {
+  return 'o';
+}
+}
+
+
 int main(void) {
   char input[2]; // user input, can either be O o X along with the position
   char board[3][3] = {
@@ -74,9 +87,10 @@ int main(void) {
     {'7', '8', '9'}
   };
   int counter = 0;
+  char startSign = signToStart();
   printf("\n\n");
   printBoard(board);
-
+  printf("Player %c make your start move", startSign);
   while (counter < MAX_NUMBER_OF_MOVES) {
     printf("\n\n");
     printf("Insert Your move (Your sign and then your position): ");

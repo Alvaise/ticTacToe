@@ -28,7 +28,7 @@ jobs:
       - name: Rename Package
         run: |
           if [ "${{runner.os}}" == Windows ]; then
-          ren build/ticTacToe ${{ matrix.asset_name }}
+          mv build/ticTacToe.exe ${{ matrix.asset_name }}
           else 
           mv build/ticTacToe ${{ matrix.asset_name}}
           fi

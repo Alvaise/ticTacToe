@@ -27,18 +27,21 @@ void updateBoard(char board[3][3], char *input) {
   }
 }
 
-bool validSign(char *sign){
-  return *sign == 'o' || *sign == 'x';
+bool validSign(char *sign, char *startSign, int *counter){
+  if (*counter % 2 == 0) {
+    return (*sign == 'o' || *sign == 'x') && (*sign == *startSign);
+  }
+  return (*sign == 'o' || *sign == 'x') && (*sign != *startSign);
 }
 
 bool validPosition(char *position){
   int pos = (int) *position - '0';
   return pos > 0 && pos < 10;
 }
-bool validInput(char *input){
+bool validInput(char *input, char *startSign, int *counter){
 char sign = input[0];
 char position = input[1];
-return validSign(&sign) && validPosition(&position);
+return validSign(&sign,startSign,counter) && validPosition(&position);
 }
 
 char victory(char board[3][3]){
@@ -92,10 +95,11 @@ int main(void) {
   printBoard(board);
   printf("Player %c make your start move", startSign);
   while (counter < MAX_NUMBER_OF_MOVES) {
+    int *pCounter = &counter;
     printf("\n\n");
     printf("Insert Your move (Your sign and then your position): ");
     scanf("%s", input);
-    if (validInput(input) == true) {
+    if (validInput(input,&startSign, pCounter) == true) {
       printf("You have Chosen %s \n", input);
       updateBoard(board, input);
       printBoard(board);

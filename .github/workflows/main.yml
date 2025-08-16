@@ -1,1 +1,42 @@
+name: Create game release
 
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  build-and-release:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset_name: ticTacToe-linux
+          - os: macos-latest
+            asset_name: ticTacToe-macos
+          - os: windows-latest
+            asset_name: ticTacToe-windows.exe
+          
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Game
+        run: make game
+
+      - name: Rename Package
+        run: |
+          if [ "${{runner.os}}" == Windows ]; then
+          ren build/ticTacToe ${{ matrix.asset_name }}
+          else 
+          mv build/ticTacToe ${{ matrix.asset_name}}
+          fi
+        shell: bash
+
+      
+      - name: Create Github Release
+        uses: softsprop/action-gh-release@v2
+        with:
+          name: Tic-Tac-Toe ${{github.ref_name}}
+          files: ${{ matrix.asset_name }}

@@ -41,3 +41,5 @@ jobs:
         with:
           name: Tic-Tac-Toe ${{github.ref_name}}
           files: ${{ matrix.asset_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
